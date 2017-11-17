@@ -1,10 +1,14 @@
+import logging
 from datetime import date
 from datetime import timedelta
+import pandas as pd
 
 from helpers import get_periods
 import utils
 from constants import DATE_SEASON_START, DATE_SEASON_END, PERIOD
 import nba.nba_api
+
+logger = logging.getLogger(__name__)
 
 class ResultSet(object):
     """Used for storing and returning dataframe(s) from nba-getter methods"""
@@ -29,13 +33,19 @@ class ResultSet(object):
 def get_games(start_date, end_date):
     """Return tables that represent the NBA schedule"""
     date_cursor = start_date
+    logger.info("Getting scoreboards from %s to %s",
+                start_date.strftime('%Y-%m-%d'),
+                end_date.strftime('%Y-%m-%d'))
     while date_cursor <= end_date:
-        print("Getting scoreboard for {}".format(date_cursor.strftime('%Y-%m-%d')))
         scoreboard = nba_api.scoreboard(**utils.date_to_dict(date_cursor))
+        logger.info("Fetched scoreboard for %s. Found %s games.",
+                    date_cursor.strftime('%Y-%m-%d'),
+                    len(scoreboard.game_header()))
         try:
             headers = pd.concat([headers, scoreboard.game_header()])
             scores = pd.concat([scores, scoreboard.line_score()])
         except NameError:
+            logger.info("Initialized return arrays.")
             headers = scoreboard.game_header()
             scores = scoreboard.line_score()
         date_cursor = date_cursor + timedelta(days=1)

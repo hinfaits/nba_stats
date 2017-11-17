@@ -1,9 +1,9 @@
 from datetime import date, time, datetime, timedelta
 
-"""The day before the regular season opener"""
-DATE_SEASON_START = date(2017, 10, 16)
+"""The day of the regular season opener"""
+DATE_SEASON_START = date(2017, 10, 17)
 
-"""Last possible date of a 17-18 season game"""
+"""Last day of the last 17-18 reg season game"""
 DATE_SEASON_END = date(2018, 4, 11)
 
 """Last possible date of a 17-18 post season game"""
