@@ -55,7 +55,7 @@ def get_games(start_date, end_date):
     result_set.add("game_scores", scores)
     return result_set
 
-def get_all_boxscores(game_id, conn):
+def get_all_boxscores(game_id, periods):
     """Get all boxscores for one game, and put them into the database
 
     You must get all game_headers and game_scores using `get_games` and write
@@ -63,7 +63,6 @@ def get_all_boxscores(game_id, conn):
 
     """
     result_set = ResultSet()
-    periods = get_periods(game_id, conn)
 
     for period in periods:
         period_params = PERIOD[period.upper()]

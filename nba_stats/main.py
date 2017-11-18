@@ -60,7 +60,8 @@ def full_update(conn):
     new_games = games_to_scrape(conn)
     for game_id in new_games:
         logger.info("Fetching boxscores for game %s", game_id)
-        boxscore_results = get_all_boxscores(game_id, conn)
+        boxscore_results = get_all_boxscores(game_id,
+                                             get_periods(game_id, conn))
         boxscore_results.write_to_db(conn, if_exists="append")
 
 

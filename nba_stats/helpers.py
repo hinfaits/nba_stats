@@ -1,6 +1,6 @@
 import pandas as pd
 
-def is_ot(game_id, conn):
+def get_ot(game_id, conn):
     """Returns the last OT period played in a game via the database
 
     Looks up `game_id` in the table `game_scores` and implicitly finds the last
@@ -26,7 +26,7 @@ def is_ot(game_id, conn):
 
     """
     game_scores = pd.read_sql_table("game_scores", conn)
-    target = game_scores.loc[game_scores['GAME_ID'] == game_id]
+    target = game_scores[game_scores['GAME_ID'] == game_id]
 
     if target.empty:
         raise ValueError("game_id {} returned no results".format(game_id))
@@ -57,7 +57,7 @@ def get_periods(game_id, conn):
 
     """
     periods = ["game", "h1", "h2", "q1", "q2", "q3", "q4"]
-    ot_str, ot_int = is_ot(game_id, conn)
+    ot_str, ot_int = get_ot(game_id, conn)
     for ot in range(1, 1 + ot_int):
         periods.append("ot" + str(ot))
     return periods
