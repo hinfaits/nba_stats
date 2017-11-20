@@ -5,7 +5,7 @@ from datetime import date
 
 import nba
 
-# These tests take upto 2 minutes to run
+# These tests do calls to the nba_api and take upto 2 minutes to run due to rate limiting
 
 class TestNbaGetGames(unittest.TestCase):
 

@@ -64,7 +64,6 @@ def full_update(conn):
                                              get_periods(game_id, conn))
         boxscore_results.write_to_db(conn, if_exists="append")
 
-
 def main():
     config_logging()
 

@@ -31,7 +31,7 @@ class ResultSet(object):
 
 
 def get_games(start_date, end_date):
-    """Return tables that represent the NBA schedule"""
+    """Get tables that represent the NBA schedule"""
     date_cursor = start_date
     logger.info("Getting scoreboards from %s to %s",
                 start_date.strftime('%Y-%m-%d'),
@@ -57,9 +57,6 @@ def get_games(start_date, end_date):
 
 def get_all_boxscores(game_id, periods):
     """Get all boxscores for one game, and put them into the database
-
-    You must get all game_headers and game_scores using `get_games` and write
-    them to the database using `write_games_to_sql` before calling `get_all_boxscores`
 
     """
     result_set = ResultSet()
