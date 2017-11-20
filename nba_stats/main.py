@@ -8,8 +8,11 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
 
-from nba import *
+import nba
+import utils
+from helpers import get_periods
 from dump import S3Dumper
+from constants import DATE_SEASON_START, DATE_SEASON_END, PERIOD
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 # For debugging
@@ -54,13 +57,13 @@ def full_update(conn):
     end_date = DATE_SEASON_END
     # end_date = date.today() - timedelta(days=2)
 
-    schedule_results = get_games(start_date, end_date)
+    schedule_results = nba.get_games(start_date, end_date)
     schedule_results.write_to_db(conn, if_exists="replace")
 
     new_games = games_to_scrape(conn)
     for game_id in new_games:
         logger.info("Fetching boxscores for game %s", game_id)
-        boxscore_results = get_all_boxscores(game_id,
+        boxscore_results = nba.get_all_boxscores(game_id,
                                              get_periods(game_id, conn))
         boxscore_results.write_to_db(conn, if_exists="append")
 

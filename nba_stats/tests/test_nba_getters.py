@@ -10,6 +10,10 @@ import nba
 class TestNbaGetGames(unittest.TestCase):
 
     def test_return_type(self):
+        """
+        Check calls to `get_games` returns a `ResultSet` object with the two
+        expected dataframes
+        """
         d = date(year=2017, month=11, day=2)
 
         results = nba.get_games(d, d)
@@ -21,6 +25,9 @@ class TestNbaGetGames(unittest.TestCase):
         self.assertIsInstance(results_dict["game_scores"], pandas.DataFrame)
 
     def test_games_fetched(self):
+        """
+        Check calls to `get_games` returns correct sized dataframe
+        """
         start_date = date(year=2017, month=10, day=27)
         end_date = date(year=2017, month=10, day=30)
 
@@ -32,6 +39,10 @@ class TestNbaGetGames(unittest.TestCase):
 class TestNbaGetBoxscores(unittest.TestCase):
 
     def test_it(self):
+        """
+        Check calls to `get_all_boxscores` returns correct amount of
+        boxscores/dataframes
+        """
         game_id = "0021700032"
         periods = ["game", "h1", "h2", "q1", "q2", "q3", "q4"]
 

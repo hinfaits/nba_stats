@@ -5,7 +5,7 @@ import pandas as pd
 
 from helpers import get_periods
 import utils
-from constants import DATE_SEASON_START, DATE_SEASON_END, PERIOD
+from constants import PERIOD
 import nba.nba_api
 
 logger = logging.getLogger(__name__)
