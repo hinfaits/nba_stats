@@ -28,6 +28,8 @@ DEBUG = True
 SEASON = "1718"
 DATE_FORMAT = "%Y_%m_%d"
 
+logger = logging.getLogger(__name__)
+
 class S3Dumper(object):
 
     def __init__(self):
@@ -35,10 +37,11 @@ class S3Dumper(object):
 
     @staticmethod
     def dump(conn, s3):
+        logger.info("Begin S3 dump")
         inspector = inspect(conn)
 
         for table_name in inspector.get_table_names():
-            print(table_name)
+            logger.info("Dumping table {} to S3".format(table_name))
 
             si_csv = StringIO()
             si_json = StringIO()
@@ -66,6 +69,7 @@ class S3Dumper(object):
                         Bucket='no-pushes',
                         ContentType=content_type,
                         Key=pathname)
+        logger.debug("Finished S3 dump")
 
 
 def main():

@@ -3,11 +3,16 @@ import logging
 from datetime import date
 from datetime import timedelta
 
+import boto3
 import pandas as pd
 from sqlalchemy import create_engine
+from sqlalchemy import inspect
 
-from nba import *
+import nba
+import utils
+from helpers import get_periods
 from dump import S3Dumper
+from constants import DATE_SEASON_START, DATE_SEASON_END, PERIOD
 from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 # For debugging
@@ -17,6 +22,14 @@ import sys
 import pdb
 
 DEBUG = True
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+def config_logging():
+    log_format = "[%(asctime)s] %(name)s %(levelname)s: %(message)s"
+    logging.basicConfig(level=logging.INFO,
+                        format=log_format)
 
 def games_to_scrape(conn):
     """Find games we need to get boxscores for"""
@@ -44,24 +57,26 @@ def full_update(conn):
     end_date = DATE_SEASON_END
     # end_date = date.today() - timedelta(days=2)
 
-    schedule_results = get_games(start_date, end_date)
+    schedule_results = nba.get_games(start_date, end_date)
     schedule_results.write_to_db(conn, if_exists="replace")
 
     new_games = games_to_scrape(conn)
     for game_id in new_games:
-        print(game_id)
-        boxscore_results = get_all_boxscores(game_id, conn)
+        logger.info("Fetching boxscores for game %s", game_id)
+        boxscore_results = nba.get_all_boxscores(game_id,
+                                             get_periods(game_id, conn))
         boxscore_results.write_to_db(conn, if_exists="append")
 
-
 def main():
+    config_logging()
+
     engine = utils.get_db()
     conn = engine.connect()
     full_update(conn)
 
     s3 = boto3.client('s3',
-                      aws_access_key_id=config.AWS_ACCESS_KEY_ID,
-                      aws_secret_access_key=config.AWS_SECRET_ACCESS_KEY)
+                      aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     S3Dumper.dump(conn, s3)
 
 if __name__ == "__main__":
