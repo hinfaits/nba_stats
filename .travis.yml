@@ -13,4 +13,4 @@ install:
   - pip install --upgrade git+git://github.com/seemethere/nba_py.git@ffeaf4251d796ff9313367a752a45a0d7b16489e
 
 script:
-  - python -m unittest discover
+  - cd nba_stats/ && python -m unittest discover
