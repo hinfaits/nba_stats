@@ -1,4 +1,5 @@
 import unittest
+import os
 
 import pandas
 from datetime import date
@@ -7,6 +8,7 @@ import nba
 
 # These tests do calls to the nba_api and take upto 2 minutes to run due to rate limiting
 
+@unittest.skipIf(os.environ.get("TRAVIS"), "Don't run this test on travis.")
 class TestNbaGetGames(unittest.TestCase):
 
     def test_return_type(self):
@@ -36,6 +38,7 @@ class TestNbaGetGames(unittest.TestCase):
         self.assertEqual(len(headers), 31)
 
 
+@unittest.skipIf(os.environ.get("TRAVIS"), "Don't run this test on travis.")
 class TestNbaGetBoxscores(unittest.TestCase):
 
     def test_it(self):
