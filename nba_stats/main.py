@@ -13,7 +13,6 @@ import utils
 from helpers import get_periods
 from dump import S3Dumper
 from constants import DATE_SEASON_START, DATE_SEASON_END, PERIOD
-from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
 # For debugging
 from pprint import pprint
@@ -68,6 +67,7 @@ def full_update(conn):
         boxscore_results.write_to_db(conn, if_exists="append")
 
 def main():
+    config = utils.get_config()
     config_logging()
 
     engine = utils.get_db()
@@ -75,8 +75,8 @@ def main():
     full_update(conn)
 
     s3 = boto3.client('s3',
-                      aws_access_key_id=AWS_ACCESS_KEY_ID,
-                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+                      aws_access_key_id=config["aws_access_key_id"],
+                      aws_secret_access_key=config["aws_secret_access_key"])
     S3Dumper.dump(conn, s3)
 
 if __name__ == "__main__":
