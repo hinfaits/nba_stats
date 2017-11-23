@@ -5,7 +5,7 @@ import utils
 
 class TestGetConfig(unittest.TestCase):
 
-    @mock.patch("utils.open")
+    @mock.patch("builtins.open")
     def test_default_paths_called(self, mock_open):
         """
         Tests
@@ -17,7 +17,7 @@ class TestGetConfig(unittest.TestCase):
         expected_calls = [mock.call("../config.json"), mock.call("./config.json")]
         self.assertEqual(mock_open.call_args_list, expected_calls)
 
-    @mock.patch("utils.open")
+    @mock.patch("builtins.open")
     def test_custom_path_called(self, mock_open):
         """
         Tests
@@ -29,7 +29,7 @@ class TestGetConfig(unittest.TestCase):
         expected_calls = [mock.call("./my_path")]
         self.assertEqual(mock_open.call_args_list, expected_calls)
 
-    @mock.patch("utils.open", create=True)
+    @mock.patch("builtins.open", create=True)
     def test_file_read_result(self, mock_open):
         test_file_pathname = "/random/path/here/doesnt/matter"
         # This is some completely random unrelated json
