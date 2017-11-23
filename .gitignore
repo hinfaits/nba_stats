@@ -100,4 +100,5 @@ ENV/
 # mypy
 .mypy_cache/
 
+config.json
 nba_cache.sqlite

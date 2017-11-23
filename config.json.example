@@ -1,0 +1,8 @@
+{
+    "aws_access_key_id": "change-this",
+    "aws_secret_access_key": "change-this",
+    "sql_username": "change-this",
+    "sql_password": "change-this",
+    "sql_host": "change-this",
+    "sql_database": "change-this"
+}

@@ -3,8 +3,6 @@ import logging
 import pandas as pd
 from datetime import date
 
-import config
-
 try:
     # For Py2, this version of StringIO is untested
     from StringIO import StringIO
@@ -72,23 +70,23 @@ class S3Dumper(object):
         logger.debug("Finished S3 dump")
 
 
-def main():
-    engine = utils.get_db()
-    conn = engine.connect()
+# def main():
+#     engine = utils.get_db()
+#     conn = engine.connect()
 
-    s3 = boto3.client('s3',
-                      aws_access_key_id=config.AWS_ACCESS_KEY_ID,
-                      aws_secret_access_key=config.AWS_SECRET_ACCESS_KEY)
+#     s3 = boto3.client('s3',
+#                       aws_access_key_id=config.AWS_ACCESS_KEY_ID,
+#                       aws_secret_access_key=config.AWS_SECRET_ACCESS_KEY)
 
-    S3Dumper.dump(conn, s3)
+#     S3Dumper.dump(conn, s3)
 
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as exc:
-        if DEBUG:
-            type, value, tb = sys.exc_info()
-            traceback.print_exc()
-            pdb.post_mortem(tb)
-        else:
-            raise exc
+# if __name__ == "__main__":
+#     try:
+#         main()
+#     except Exception as exc:
+#         if DEBUG:
+#             type, value, tb = sys.exc_info()
+#             traceback.print_exc()
+#             pdb.post_mortem(tb)
+#         else:
+#             raise exc
